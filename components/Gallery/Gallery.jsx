@@ -53,7 +53,7 @@ const Gallery = () => {
                 {(images)?
                     images.map(image => {
                         return (
-                            <li>
+                            <li key={image}>
                                 <img src={`/img/${image.imgurl}`} alt={image.imgurl} className={styles.item} onClick={e => triggerImage(e.target, image.soundurl)} />
                             </li>
                         )
