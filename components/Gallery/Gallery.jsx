@@ -1,20 +1,39 @@
 import React, {useEffect, useState} from 'react';
-import styles from './Gallery.module.css'
+import styles from './Gallery.module.css';
+import axios from 'axios';
 
 const Gallery = () => {
 
     const [background, setBackground] = useState(null);
     const [selectedImage, setSelectedImage] = useState(null);
+    const [images, setImages] = useState(null);
+    const [playingSound, setPlayingSound] = useState(null);
+    const [everyTimeSound, setEveryTimeSound] = useState(null);
 
     useEffect(() => {
         setBackground(document.getElementsByClassName(styles.backgroundBlack)[0]);
+        var audio = new Audio(`/sounds/beat.mp3`);
+
+        setEveryTimeSound(audio);
+        axios.get("/api/imagesAndSound")
+            .then(e => {
+                setImages(e.data);
+                
+            })
+            .catch(err => {
+                console.error(err);
+            })
     }, [])
 
-    const triggerImage = (image) => {
+    const triggerImage = (image, soundname) => {
+        everyTimeSound.pause();
+        var audio = new Audio(`/sounds/${soundname}`);
+        setPlayingSound(audio);
         background.style.display = "block";
         setSelectedImage(image);
         image.classList.add(styles.selected);
         image.classList.remove(styles.item);
+        audio.play();
     } 
     
     const unselectImage = () => {
@@ -22,33 +41,25 @@ const Gallery = () => {
         selectedImage.classList.remove(styles.selected);
         selectedImage.classList.add(styles.item);
         setSelectedImage(null);
+        playingSound.pause();
+        everyTimeSound.play()
+        
     }
 
     return (
         <div>
             <div className={styles.backgroundBlack} onClick={e => unselectImage()}></div>
             <ul className={styles.gallery}>
-                <li>
-                    <img src="/img/bigmouthgoofy.jpg" alt="bigmouth goofy" className={styles.item} onClick={e => triggerImage(e.target)}/>
-                </li>
-                <li>
-                    <img src="/img/fathergoofy.jpg" alt="father goofy" className={styles.item} onClick={e => triggerImage(e.target)} />
-                </li>
-                <li>
-                    <img src="/img/hahagoofy.jpg" alt="haha goofy" className={styles.item} onClick={e => triggerImage(e.target)} />
-                </li>
-                <li>
-                    <img src="/img/shotgungoofy.jpg" alt="shot gun goofy" className={styles.item} onClick={e => triggerImage(e.target)} />
-                </li>
-                <li>
-                    <img src="/img/traingoofy.jpg" alt="train goofy" className={styles.item} onClick={e => triggerImage(e.target)} />
-                </li>
-                <li>
-                    <img src="/img/vroomgoofy.jpg" alt="vroom goofy bike" className={styles.item} onClick={e => triggerImage(e.target)} />
-                </li>
-                <li>
-                    <img src="/img/yoshi.png" alt="yoshi licker" className={styles.item} onClick={e => triggerImage(e.target)} />
-                </li>
+                {(images)?
+                    images.map(image => {
+                        return (
+                            <li>
+                                <img src={`/img/${image.imgurl}`} alt={image.imgurl} className={styles.item} onClick={e => triggerImage(e.target, image.soundurl)} />
+                            </li>
+                        )
+                    })
+                    : false 
+                }
             </ul>
         </div>
         
