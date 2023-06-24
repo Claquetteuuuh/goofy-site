@@ -1,10 +1,15 @@
-import {readdirSync} from 'fs';
 
 export default async function handler(req, res){
     if(req.method === "GET"){
-        const pictures = readdirSync("./public/img/");
-        const sounds = readdirSync("./public/sounds/");
-
+        const pictures = [
+            "bigmouthgoofy.jpg",
+            "fathergoofy.jpg",
+            "hahagoofy.jpg",
+            "shotgungoofy.jpg",
+            "traingoofy.jpg",
+            "vroomgoofy.jpg",
+            "yoshi.png"
+        ];
         const elementLs = [];
 
         pictures.forEach(img => {
