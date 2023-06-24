@@ -1,9 +1,9 @@
-import fs from 'fs';
+import {readdirSync} from 'fs';
 
 export default async function handler(req, res){
     if(req.method === "GET"){
-        const pictures = fs.readdirSync("./public/img/");
-        const sounds = fs.readdirSync("./public/sounds/");
+        const pictures = readdirSync("./public/img/");
+        const sounds = readdirSync("./public/sounds/");
 
         const elementLs = [];
 
