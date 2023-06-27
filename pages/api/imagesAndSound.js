@@ -12,7 +12,12 @@ export default async function handler(req, res){
             "shotgungoofy.jpg",
             "traingoofy.jpg",
             "vroomgoofy.jpg",
-            "yoshi.png"
+            "yoshi.png",
+            "endermangoofy.jpg",
+            "pcgoofy.jpg",
+            "railgoofy.jpg",
+            "kaarischickengoofy.jpg",
+            
         ];
 
         const elementLs = [];
